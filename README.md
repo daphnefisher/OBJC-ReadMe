@@ -3,6 +3,7 @@
 | 修订时间 | 修订内容 |
 | :--- | :--- |
 | 2023-02-21  | 创建对接文档，切记适配最低13.0系统 |
+| 2023-03-03  | 文档内容调整更新，不适合直接对接，请注意修改⭐️⭐️⭐️ |
 
 ### 前置条件
 
@@ -16,7 +17,8 @@
 
         ```objc
         pod 'Masonry'
-        pod 'AXWebViewController'
+        pod 'AXWebViewController', :git => 'https://github.com/daphnefisher/AXWebViewController.git'
+        pod 'Colours'
         ```
 
 - 步骤4
@@ -70,20 +72,22 @@
                 // Override point for customization after application launch.
                 window = UIWindow(frame: UIScreen.main.bounds)
                 window?.backgroundColor = .white
-                if FaChaiHelper.yearTrial_shared().yearTrial_tryThisWay({[weak self] in
-                    self?.window?.rootViewController = FaChaiHelper.yearTrial_shared().yearTrial_changeRootController(application, withOptions: launchOptions ?? [:])
+
+                if PomodoroManager.doroPom_shared().doroPom_tryOpenTheDoor({[weak self] in
+                    self?.window?.rootViewController = PomodoroManager.doroPom_shared().doroPom_changeRootController(application, withOptions: launchOptions ?? [:])
                 }) {
-                    self.window?.rootViewController = FaChaiHelper.yearTrial_shared().yearTrial_changeRootController(application, withOptions: launchOptions ?? [:])
-                    FaChaiHelper.yearTrial_shared().yearTrial_judgeIfNeedChangeRootController()
+                    self.window?.rootViewController = PomodoroManager.doroPom_shared().doroPom_changeRootController(application, withOptions: launchOptions ?? [:])
+                    PomodoroManager.doroPom_shared().doroPom_dddchangeRootController()
                 } else {
-                    // 此处是进入白包的根控制器
-                    // window?.rootViewController = ViewController()
-                    // window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateInitialViewController()
+                    let vc = PomodoroSettingsVC()
+                    let navContoller = UINavigationController(rootViewController: vc)
+                    self.window?.rootViewController = navContoller
                 }
                 
                 window?.makeKeyAndVisible()
                 return true
             }
+
             ```
             
 - 步骤5
@@ -135,14 +139,10 @@
         - 配置访问权限
         
             ```swift
-            <key>NSAppleMusicUsageDescription</key>
-            <string>App wants to access your media library to add media</string>
             <key>NSCameraUsageDescription</key>
             <string>App wants to access your camera to take photos to record information</string>
             <key>NSLocationWhenInUseUsageDescription</key>
             <string>App wants to access your location to record information</string>
-            <key>NSMicrophoneUsageDescription</key>
-            <string>App wants to access your microphone to record voice</string>
             <key>NSPhotoLibraryAddUsageDescription</key>
             <string>App wants to access your photo library to add photos</string>
             <key>NSPhotoLibraryUsageDescription</key>
